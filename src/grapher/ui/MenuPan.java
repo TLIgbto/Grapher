@@ -46,8 +46,8 @@ public class MenuPan extends JPanel implements ActionListener {
         if (e.getSource() == addB) {
             new JOptionPane().showMessageDialog(
                     null,
-                    "Renseignez les noms des deux joueurs",
-                    "Erreur", JOptionPane.INFORMATION_MESSAGE
+                    "",
+                    "Ajout nouvelle fonction", JOptionPane.INFORMATION_MESSAGE
             );
         }
     }
