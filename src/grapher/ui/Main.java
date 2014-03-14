@@ -11,7 +11,6 @@ public class Main extends JFrame {
     /**
      *
      */
-
     private static final long serialVersionUID = 1L;
 
     Main(String title, String[] expressions) {
@@ -23,8 +22,8 @@ public class Main extends JFrame {
             grapher.add(expression);
             listModel.addElement(expression);
         }
-        LeftPane left = new LeftPane(listModel, grapher);
-        JSplitPane spanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left.getLeft(), grapher);
+        JSplitPane spanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                new LeftPane(listModel, grapher), grapher);
         add(spanel);
         setJMenuBar(new MenuBar(grapher, listModel));
         pack();

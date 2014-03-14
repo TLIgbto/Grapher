@@ -13,6 +13,12 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModel extends AbstractTableModel {
 
+    Object donnees[][];
+
+    public TableModel(Object donnees[][]) {
+        this.donnees = donnees;
+    }
+
     @Override
     public int getColumnCount() {
         // TODO Auto-generated method stub
@@ -21,13 +27,11 @@ public class TableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        // TODO Auto-generated method stub
-        return 0;
+        return donnees.length;
     }
 
     @Override
-    public Object getValueAt(int arg0, int arg1) {
-        // TODO Auto-generated method stub
-        return null;
+    public Object getValueAt(int parm1, int parm2) {
+        return donnees[parm1][parm2];
     }
 }
