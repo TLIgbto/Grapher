@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.BasicStroke;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 
 import java.awt.Point;
 
@@ -21,7 +20,7 @@ import java.awt.event.MouseWheelEvent;
 
 import grapher.fc.*;
 
-public class Grapher extends JPanel implements MouseInputListener {
+public class Grapher extends JPanel {
 
     static final int MARGIN = 40;
     static final int STEP = 5;
@@ -39,6 +38,7 @@ public class Grapher extends JPanel implements MouseInputListener {
     protected double ymin, ymax;
 
     protected Vector<Function> functions;
+    private LeftPane leftPane;
 
     public Grapher() {
         xmin = -PI / 2.;
@@ -47,85 +47,8 @@ public class Grapher extends JPanel implements MouseInputListener {
         ymax = 1.5;
 
         functions = new Vector<Function>();
-        MouseInputAdapter mia = new MouseInputAdapter() {
-            int x = 0;
-            int y = 0;
-            Point p0, p1;
-            boolean gauche, milieu, droite, droitedragged, gauchedragged = false;
 
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                // TODO Auto-generated method stub
-                super.mouseWheelMoved(e);
-                int n = e.getWheelRotation();
-                if (n < 0) {
-                    zoom(e.getPoint(), 5);
-                } else {
-                    zoom(e.getPoint(), -5);
-                }
-
-            }
-
-            public void mouseDragged(MouseEvent e) {
-
-                if (gauche) {
-                    gauchedragged = true;
-                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    translate((x - e.getX()) / 50, (y - e.getY()) / 50);
-                } else if (milieu) {
-
-                    p1 = e.getPoint();
-                    if (p0.x > p1.x) {
-                        zoom(p0, -5);
-                    } else if (p0.x < p1.x) {
-                        zoom(p0, 5);
-                    }
-
-                } else if (droite) {
-                    droitedragged = true;
-                    p1 = e.getPoint();
-                }
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-                p0 = new Point(x, y);
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    gauche = true;
-
-                } else if (e.getButton() == MouseEvent.BUTTON2) {
-                    milieu = true;
-
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    droite = true;
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
-                if (droitedragged) {
-                    zoom(p0, p1);
-                } else if (gauchedragged) {
-                    //aucun traitement
-                } else if (gauche) {
-                    zoom(p0, 5);
-                } else if (droite) {
-                    zoom(p0, -5);
-                }
-
-                gauche = false;
-                droite = false;
-                droitedragged = false;
-                gauchedragged = false;
-                milieu = false;
-            }
-
-        };
+        MyListener mia = new MyListener();
         addMouseListener(mia);
         addMouseMotionListener(mia);
         addMouseWheelListener(mia);
@@ -322,52 +245,91 @@ public class Grapher extends JPanel implements MouseInputListener {
         repaint();
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
-
+    public LeftPane getLeftPane() {
+        return leftPane;
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
-
+    public void setLeftPane(LeftPane leftPane) {
+        this.leftPane = leftPane;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            setCursor(new Cursor(Cursor.HAND_CURSOR));
+    class MyListener extends MouseInputAdapter {
+
+        int x = 0;
+        int y = 0;
+        Point p0, p1;
+        boolean gauche, milieu, droite, droitedragged, gauchedragged = false;
+
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            // TODO Auto-generated method stub
+            super.mouseWheelMoved(e);
+            int n = e.getWheelRotation();
+            if (n < 0) {
+                zoom(e.getPoint(), 5);
+            } else {
+                zoom(e.getPoint(), -5);
+            }
+
         }
-    }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            setCursor(new Cursor(Cursor.HAND_CURSOR));
-            mouseDragged(e);
+        public void mouseDragged(MouseEvent e) {
+
+            if (gauche) {
+                gauchedragged = true;
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+                translate((x - e.getX()) / 50, (y - e.getY()) / 50);
+            } else if (milieu) {
+
+                p1 = e.getPoint();
+                if (p0.x > p1.x) {
+                    zoom(p0, -5);
+                } else if (p0.x < p1.x) {
+                    zoom(p0, 5);
+                }
+
+            } else if (droite) {
+                droitedragged = true;
+                p1 = e.getPoint();
+            }
+
         }
 
-    }
+        @Override
+        public void mousePressed(MouseEvent e) {
+            x = e.getX();
+            y = e.getY();
+            p0 = new Point(x, y);
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                gauche = true;
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+            } else if (e.getButton() == MouseEvent.BUTTON2) {
+                milieu = true;
+
+            } else if (e.getButton() == MouseEvent.BUTTON3) {
+                droite = true;
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
             setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+            if (droitedragged) {
+                zoom(p0, p1);
+            } else if (gauchedragged) {
+                //aucun traitement
+            } else if (gauche) {
+                zoom(p0, 5);
+            } else if (droite) {
+                zoom(p0, -5);
+            }
+
+            gauche = false;
+            droite = false;
+            droitedragged = false;
+            gauchedragged = false;
+            milieu = false;
         }
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-
     }
 }

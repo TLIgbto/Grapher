@@ -4,13 +4,13 @@ import grapher.fc.Function;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 
 import javax.swing.AbstractAction;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
@@ -23,13 +23,15 @@ public class LeftPane extends JPanel {
 
     LeftPane(Grapher grapher) {
         this.grapher = grapher;
+        this.grapher.setLeftPane(this);
         setLayout(new BorderLayout());
         tab = new TabPan(grapher);
         add(tab);
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new FlowLayout());
+        
         this.tool = new JToolBar(JToolBar.HORIZONTAL);
         setToolBar(tool);
-        panel.add(tool, BorderLayout.CENTER);
+        panel.add(tool);
         add(panel, BorderLayout.SOUTH);
     }
 
@@ -86,4 +88,12 @@ public class LeftPane extends JPanel {
      }
      });*/
 
+    public void refresh() {  
+        remove(tab);
+        grapher.setLeftPane(new LeftPane(grapher));
+        tab = grapher.getLeftPane().tab;        
+        add(tab);
+        revalidate();
+        repaint();
+    }
 }

@@ -1,9 +1,7 @@
 package grapher.ui;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
-import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
 public class Main extends JFrame {
@@ -20,7 +18,8 @@ public class Main extends JFrame {
         for (String expression : expressions) {
             grapher.add(expression);
         }
-        JSplitPane spanel = new JSplitPane(1, new LeftPane(grapher), grapher);
+        grapher.setLeftPane(new LeftPane(grapher));
+        JSplitPane spanel = new JSplitPane(1, grapher.getLeftPane(), grapher);
         add(spanel);
         setJMenuBar(new MenuBar(new LeftPane(grapher)));
         pack();
