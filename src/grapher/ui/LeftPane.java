@@ -6,8 +6,6 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
@@ -16,19 +14,17 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-public class LeftPane extends JPanel implements MouseListener {
+public class LeftPane extends JPanel {
 
-    private JList<String> list;
-    private DefaultListModel<String> listModel;
     private JToolBar tool;
     JPanel left;
-    private Grapher grapher;
+    TabPan tab;
+    Grapher grapher;
 
-    LeftPane(DefaultListModel<String> listModel, Grapher grapher) {
+    LeftPane(Grapher grapher) {
         this.grapher = grapher;
-        this.listModel = listModel;
         setLayout(new BorderLayout());
-        TabPan tab = new TabPan(grapher, listModel);
+        tab = new TabPan(grapher);
         add(tab);
         JPanel panel = new JPanel(new BorderLayout());
         this.tool = new JToolBar(JToolBar.HORIZONTAL);
@@ -41,8 +37,8 @@ public class LeftPane extends JPanel implements MouseListener {
         tool.setFloatable(false);
         tool.setPreferredSize(new Dimension(50, 24));
         //tool.setLayout();
-        JButton plus = makeButton(new AddFunction(grapher, listModel), "Ajouter une nouvelle fonction", "+");
-        JButton moins = makeButton(new RemoveFunction(grapher, listModel), "Supprimer une fonction", "-");
+        JButton plus = makeButton(new AddFunction(this), "Ajouter une nouvelle fonction", "+");
+        JButton moins = makeButton(new RemoveFunction(this), "Supprimer une fonction", "-");
         tool.add(plus);
         tool.add(moins);
     }
@@ -72,41 +68,22 @@ public class LeftPane extends JPanel implements MouseListener {
         g.drawPolyline(Xs, Ys, N);
         repaint();
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        int index = list.locationToIndex(e.getPoint());
-        String item = list.getModel().getElementAt(index);
-        for (Function fo : grapher.functions) {
-            if (fo.toString().compareTo(item) == 0) {
-                highLightGraph(fo);
-            }
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-    }
+    /*
+     @Override
+     public void mouseClicked(MouseEvent e) {
+     // TODO Auto-generated method stub
+     int index = list.locationToIndex(e.getPoint());
+     String item = list.getModel().getElementAt(index);
+     for (Function fo : grapher.functions) {
+     if (fo.toString().compareTo(item) == 0) {
+     highLightGraph(fo);
+     }
+     }
+     }
+     .addMouseListener(new java.awt.event.MouseAdapter() {
+     public void mouseReleased(java.awt.event.MouseEvent evt) {
+     creation(evt);
+     }
+     });*/
 
 }

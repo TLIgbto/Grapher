@@ -15,10 +15,10 @@ import javax.swing.JTable;
  */
 public class TabPan extends JTable {
 
-    public TabPan(Grapher g, DefaultListModel<String> listModel) {
-        Object donnee[][] = new Object[listModel.size()][2];
-        for (int i = 0; i < listModel.size(); i++) {
-            donnee[i][0] = listModel.get(i);
+    public TabPan(Grapher g) {
+        Object donnee[][] = new Object[g.functions.size()][2];
+        for (int i = 0; i < g.functions.size(); i++) {
+            donnee[i][0] = g.functions.get(i);
             donnee[i][1] = new JColorChooser();
         }
         TableModel model = new TableModel(donnee);

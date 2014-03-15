@@ -16,13 +16,13 @@ import javax.swing.JMenuItem;
  * @author toure
  */
 public class MenuBar extends JMenuBar{
-    public MenuBar(Grapher g, DefaultListModel<String> listModel) {
+    public MenuBar(LeftPane l) {
         JMenu exp = new JMenu("Expression");
         JMenuItem add = new JMenuItem();
-        add.setAction(new AddFunction(g, listModel));
+        add.setAction(new AddFunction(l));
         add.setText("Add ...");
         JMenuItem rem = new JMenuItem("Remove");
-        rem.setAction(new RemoveFunction(g, listModel));
+        rem.setAction(new RemoveFunction(l));
         rem.setText("Remove ...");
         exp.add(add);
         exp.add(rem);
