@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package grapher.ui;
 
 import grapher.fc.Function;
@@ -21,6 +20,7 @@ class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
 
     private JButton delegate = new JButton();
     private TabPan tab;
+    private int row;
 
     Color savedColor;
 
@@ -30,9 +30,14 @@ class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
             public void actionPerformed(ActionEvent actionEvent) {
                 Color color = JColorChooser.showDialog(delegate, "Color Chooser", savedColor);
                 ColorChooserEditor.this.changeColor(color);
+                highLight();
             }
         };
         delegate.addActionListener(actionListener);
+    }
+
+    public void highLight() {
+        tab.g.highLightGraph((Function) tab.getValueAt(row, 0), savedColor);
     }
 
     public Object getCellEditorValue() {
@@ -49,8 +54,7 @@ class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
             int row, int column) {
         changeColor((Color) value);
-            System.out.println(value);
-        tab.g.highLightGraph((Function)tab.getValueAt(row, 0), (Color)value);
+        this.row = row;
         return delegate;
     }
 }

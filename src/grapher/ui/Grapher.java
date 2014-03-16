@@ -66,10 +66,9 @@ public class Grapher extends JPanel {
             Xs[i] = X(x);
             Ys[i] = Y(f.y(xs[i]));
         }
-        g.setStroke(new BasicStroke(1.5f));
+        g.setStroke(new BasicStroke(2f));
         g.setColor(c);
         g.drawPolyline(Xs, Ys, N);
-        revalidate();
     }
 
     public void add(String expression) {
