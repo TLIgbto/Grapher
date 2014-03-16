@@ -5,8 +5,7 @@
  */
 package grapher.ui;
 
-import java.awt.Color;
-import javax.swing.JTable;
+import javax.swing.*;
 
 /**
  *
@@ -20,8 +19,8 @@ public class TabPan extends JTable {
         this.g = g;
         Object donnee[][] = new Object[g.functions.size()][2];
         for (int i = 0; i < g.functions.size(); i++) {
-            donnee[i][0] = g.functions.get(i);
-            donnee[i][1] = Color.BLACK;
+            donnee[i][0] = g.functions.get(i)[0];
+            donnee[i][1] = g.functions.get(i)[1];
         }
         TableModel model = new TableModel(donnee);
         setModel(model);

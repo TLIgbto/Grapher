@@ -1,30 +1,22 @@
 package grapher.ui;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.BasicStroke;
-import javax.swing.JPanel;
+import grapher.fc.Function;
+import grapher.fc.FunctionFactory;
+
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
-
-import java.awt.Point;
-
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.Vector;
 
 import static java.lang.Math.*;
-
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-
-import grapher.fc.*;
 
 public class Grapher extends JPanel {
 
     static final int MARGIN = 40;
     static final int STEP = 5;
-
+    static final Color defaultColor = Color.black;
     static final BasicStroke dash = new BasicStroke(1, BasicStroke.CAP_ROUND,
             BasicStroke.JOIN_ROUND,
             1.f,
@@ -37,7 +29,7 @@ public class Grapher extends JPanel {
     protected double xmin, xmax;
     protected double ymin, ymax;
 
-    protected Vector<Function> functions;
+    protected Vector<Object[]> functions;
     private LeftPane leftPane;
 
     public Grapher() {
@@ -45,8 +37,7 @@ public class Grapher extends JPanel {
         xmax = 3 * PI / 2;
         ymin = -1.5;
         ymax = 1.5;
-
-        functions = new Vector<Function>();
+        functions = new Vector< Object[] > ();
 
         MyListener mia = new MyListener();
         addMouseListener(mia);
@@ -66,30 +57,37 @@ public class Grapher extends JPanel {
             Xs[i] = X(x);
             Ys[i] = Y(f.y(xs[i]));
         }
-        g.setStroke(new BasicStroke(2f));
+
+        for (Object[] function : functions) {
+            if (f.toString().compareTo(function[0].toString())==0) {
+                function[1]=c;
+            }
+        }
+
         g.setColor(c);
         g.drawPolyline(Xs, Ys, N);
     }
 
     public void add(String expression) {
-        add(FunctionFactory.createFunction(expression));
+        Object [] tab = {FunctionFactory.createFunction(expression),defaultColor};
+        add(tab);
     }
 
     public void remove(String expression) {
-        for (Function function : functions) {
-            if (function.toString().equals(expression)) {
+        for (Object[] function : functions) {
+            if (function[0]==expression) {
                 remove(function);
                 break;
             }
         }
     }
 
-    public void add(Function function) {
-        functions.add(function);
+    public void add(Object[] tab) {
+        functions.add(tab);
         repaint();
     }
 
-    public void remove(Function function) {
+    public void remove(Object[] function) {
         functions.remove(function);
         repaint();
     }
@@ -130,6 +128,7 @@ public class Grapher extends JPanel {
         g2.clipRect(0, 0, W, H);
         g2.translate(-MARGIN, -MARGIN);
 
+
         // x values
         final int N = W / STEP + 1;
         final double dx = dx(STEP);
@@ -141,12 +140,13 @@ public class Grapher extends JPanel {
             Xs[i] = X(x);
         }
 
-        for (Function f : functions) {
+        for (Object[] f : functions) {
             // y values
             int Ys[] = new int[N];
             for (int i = 0; i < N; i++) {
-                Ys[i] = Y(f.y(xs[i]));
+                Ys[i] = Y(((Function) f[0]).y(xs[i]));
             }
+            g2.setColor((Color)f[1]);
             g2.drawPolyline(Xs, Ys, N);
         }
 

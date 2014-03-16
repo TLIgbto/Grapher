@@ -6,15 +6,12 @@
 package grapher.ui;
 
 import grapher.fc.Function;
-import java.awt.Color;
-import java.awt.Component;
+
+import javax.swing.*;
+import javax.swing.table.TableCellEditor;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.AbstractCellEditor;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
 
 class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
 
@@ -37,7 +34,8 @@ class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
     }
 
     public void highLight() {
-        tab.g.highLightGraph((Function) tab.getValueAt(row, 0), savedColor);
+
+       tab.g.highLightGraph((Function) tab.getValueAt(row, 0), savedColor);
     }
 
     public Object getCellEditorValue() {
