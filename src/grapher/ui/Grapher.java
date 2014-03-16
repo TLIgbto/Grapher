@@ -52,6 +52,24 @@ public class Grapher extends JPanel {
         addMouseListener(mia);
         addMouseMotionListener(mia);
         addMouseWheelListener(mia);
+    }    
+
+    public void highLightGraph(Function f, Color c) {
+        Graphics2D g = (Graphics2D) getGraphics();
+        final int N = (W / STEP) + 1;
+        double[] xs = new double[N];
+        int Xs[] = new int[N];
+        int Ys[] = new int[N];
+        for (int i = 0; i < N; i++) {
+            double x = xmin + i * dx(STEP);
+            xs[i] = x;
+            Xs[i] = X(x);
+            Ys[i] = Y(f.y(xs[i]));
+        }
+        g.setStroke(new BasicStroke(1.5f));
+        g.setColor(c);
+        g.drawPolyline(Xs, Ys, N);
+        revalidate();
     }
 
     public void add(String expression) {

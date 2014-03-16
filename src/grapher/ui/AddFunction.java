@@ -16,9 +16,14 @@ public class AddFunction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String expression = JOptionPane.showInputDialog("Nouvelle Expression :");
-        grapher.add(expression);
-        // Ici de la grosse merde !!
-        l.refresh(); 
+        try {
+            String expression = JOptionPane.showInputDialog("Nouvelle Expression :");
+            if (!expression.isEmpty()) {
+                grapher.add(expression);
+                // Ici de la grosse merde !!
+                l.refresh();
+            }
+        } catch (Exception ex) {
+        }
     }
 }

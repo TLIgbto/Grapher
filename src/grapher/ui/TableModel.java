@@ -31,7 +31,22 @@ public class TableModel extends AbstractTableModel {
     }
 
     @Override
-    public Object getValueAt(int parm1, int parm2) {
-        return donnees[parm1][parm2];
+    public Object getValueAt(int row, int column) {
+        return donnees[row][column];
+    }
+
+    @Override
+    public Class getColumnClass(int column) {
+        return (getValueAt(0, column).getClass());
+    }
+
+    @Override
+    public void setValueAt(Object value, int row, int column) {
+        donnees[row][column] = value;
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
     }
 }

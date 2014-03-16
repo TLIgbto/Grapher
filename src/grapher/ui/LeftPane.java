@@ -28,7 +28,7 @@ public class LeftPane extends JPanel {
         tab = new TabPan(grapher);
         add(tab);
         JPanel panel = new JPanel(new FlowLayout());
-        
+
         this.tool = new JToolBar(JToolBar.HORIZONTAL);
         setToolBar(tool);
         panel.add(tool);
@@ -70,28 +70,28 @@ public class LeftPane extends JPanel {
         g.drawPolyline(Xs, Ys, N);
         repaint();
     }
-    /*
-     @Override
-     public void mouseClicked(MouseEvent e) {
-     // TODO Auto-generated method stub
-     int index = list.locationToIndex(e.getPoint());
-     String item = list.getModel().getElementAt(index);
-     for (Function fo : grapher.functions) {
-     if (fo.toString().compareTo(item) == 0) {
-     highLightGraph(fo);
-     }
-     }
-     }
-     .addMouseListener(new java.awt.event.MouseAdapter() {
+
+    /*@Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        int index = list.locationToIndex(e.getPoint());
+        String item = list.getModel().getElementAt(index);
+        for (Function fo : grapher.functions) {
+            if (fo.toString().compareTo(item) == 0) {
+                highLightGraph(fo);
+            }
+        }
+    }
+    /*.addMouseListener(new java.awt.event.MouseAdapter() {
      public void mouseReleased(java.awt.event.MouseEvent evt) {
      creation(evt);
      }
      });*/
 
-    public void refresh() {  
+    public void refresh() {
         remove(tab);
         grapher.setLeftPane(new LeftPane(grapher));
-        tab = grapher.getLeftPane().tab;        
+        tab = grapher.getLeftPane().tab;
         add(tab);
         revalidate();
         repaint();
