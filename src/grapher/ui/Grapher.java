@@ -37,21 +37,19 @@ public class Grapher extends JPanel {
         xmax = 3 * PI / 2;
         ymin = -1.5;
         ymax = 1.5;
-        functions = new Vector< Object[] > ();
+        functions = new Vector< Object[]>();
 
         MyListener mia = new MyListener();
         addMouseListener(mia);
         addMouseMotionListener(mia);
         addMouseWheelListener(mia);
-    }    
+    }
 
     public void highLightGraph(Function f, Color c) {
         Graphics2D g = (Graphics2D) getGraphics();
-        Rectangle r=g.getClipBounds();
+        Rectangle r = g.getClipBounds();
 
-
-
-        final int N = (W/ this.STEP) + 1;
+        final int N = (W / this.STEP) + 1;
         final double dx = dx(STEP);
         double[] xs = new double[N];
         int Xs[] = new int[N];
@@ -64,26 +62,26 @@ public class Grapher extends JPanel {
         }
 
         for (Object[] function : functions) {
-            if (f.toString().compareTo(function[0].toString())==0) {
-                function[1]=c;
+            if (f.toString().compareTo(function[0].toString()) == 0) {
+                function[1] = c;
             }
         }
 
         g.setStroke(new BasicStroke(1.5f));
         g.setColor(c);
         g.drawPolyline(Xs, Ys, N);
+        repaint();
 
     }
 
-
     public void add(String expression) {
-        Object [] tab = {FunctionFactory.createFunction(expression),defaultColor};
+        Object[] tab = {FunctionFactory.createFunction(expression), defaultColor};
         add(tab);
     }
 
     public void remove(String expression) {
         for (Object[] function : functions) {
-            if (function[0]==expression) {
+            if (function[0] == expression) {
                 remove(function);
                 break;
             }
@@ -136,7 +134,6 @@ public class Grapher extends JPanel {
         g2.clipRect(0, 0, W, H);
         g2.translate(-MARGIN, -MARGIN);
 
-
         // x values
         final int N = W / STEP + 1;
         final double dx = dx(STEP);
@@ -154,7 +151,7 @@ public class Grapher extends JPanel {
             for (int i = 0; i < N; i++) {
                 Ys[i] = Y(((Function) f[0]).y(xs[i]));
             }
-            g2.setColor((Color)f[1]);
+            g2.setColor((Color) f[1]);
             g2.drawPolyline(Xs, Ys, N);
         }
         g2.setColor(Color.BLACK);
