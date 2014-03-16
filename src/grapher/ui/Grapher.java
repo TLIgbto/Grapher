@@ -16,6 +16,7 @@ public class Grapher extends JPanel {
 
     static final int MARGIN = 40;
     static final int STEP = 5;
+    static String selected="rien";
     static final Color defaultColor = Color.black;
     static final BasicStroke dash = new BasicStroke(1, BasicStroke.CAP_ROUND,
             BasicStroke.JOIN_ROUND,
@@ -46,30 +47,12 @@ public class Grapher extends JPanel {
     }
 
     public void highLightGraph(Function f, Color c) {
-        Graphics2D g = (Graphics2D) getGraphics();
-        Rectangle r = g.getClipBounds();
-
-        final int N = (W / this.STEP) + 1;
-        final double dx = dx(STEP);
-        double[] xs = new double[N];
-        int Xs[] = new int[N];
-        int Ys[] = new int[N];
-        for (int i = 0; i < N; i++) {
-            double x = this.xmin + i * dx;
-            xs[i] = x;
-            Xs[i] = X(x);
-            Ys[i] = Y(f.y(xs[i]));
-        }
-
+        selected=f.toString();
         for (Object[] function : functions) {
             if (f.toString().compareTo(function[0].toString()) == 0) {
                 function[1] = c;
             }
         }
-
-        g.setStroke(new BasicStroke(1.5f));
-        g.setColor(c);
-        g.drawPolyline(Xs, Ys, N);
         repaint();
 
     }
@@ -151,9 +134,15 @@ public class Grapher extends JPanel {
             for (int i = 0; i < N; i++) {
                 Ys[i] = Y(((Function) f[0]).y(xs[i]));
             }
+            if (f[0].toString().compareTo(selected)==0){
+                g2.setStroke(new BasicStroke(2f));
+            }else{
+                g2.setStroke(new BasicStroke(1.f));
+            }
             g2.setColor((Color) f[1]);
             g2.drawPolyline(Xs, Ys, N);
         }
+
         g2.setColor(Color.BLACK);
         g2.setClip(null);
 
