@@ -47,12 +47,17 @@ public class Grapher extends JPanel {
 
     public void highLightGraph(Function f, Color c) {
         Graphics2D g = (Graphics2D) getGraphics();
-        final int N = (W / STEP) + 1;
+        Rectangle r=g.getClipBounds();
+
+
+
+        final int N = (W/ this.STEP) + 1;
+        final double dx = dx(STEP);
         double[] xs = new double[N];
         int Xs[] = new int[N];
         int Ys[] = new int[N];
         for (int i = 0; i < N; i++) {
-            double x = xmin + i * dx(STEP);
+            double x = this.xmin + i * dx;
             xs[i] = x;
             Xs[i] = X(x);
             Ys[i] = Y(f.y(xs[i]));
@@ -64,9 +69,12 @@ public class Grapher extends JPanel {
             }
         }
 
+        g.setStroke(new BasicStroke(1.5f));
         g.setColor(c);
         g.drawPolyline(Xs, Ys, N);
+
     }
+
 
     public void add(String expression) {
         Object [] tab = {FunctionFactory.createFunction(expression),defaultColor};
@@ -149,7 +157,7 @@ public class Grapher extends JPanel {
             g2.setColor((Color)f[1]);
             g2.drawPolyline(Xs, Ys, N);
         }
-
+        g2.setColor(Color.BLACK);
         g2.setClip(null);
 
         // axes
