@@ -8,7 +8,7 @@ public class RemoveFunction extends AbstractAction {
 
     private Grapher grapher;
     private LeftPane l;
-    
+
     public RemoveFunction(LeftPane l) {
         // TODO Auto-generated constructor stub
         this.grapher = l.grapher;
@@ -17,13 +17,22 @@ public class RemoveFunction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object expression = JOptionPane.showInputDialog(grapher,
-                "Choisir fonction à supprimer",
-                "Suppression fonction",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                grapher.functions.toArray(), grapher.functions.get(0));
-        grapher.remove(expression.toString());
-        l.refresh();
+        try {
+            String[] functions = new String[grapher.functions.size()];
+            int i = 0;
+            for(Object[] f : grapher.functions) {
+                functions[i++] = f[0].toString();
+            }
+            Object expression = JOptionPane.showInputDialog(grapher,
+                    "Choisir fonction à supprimer",
+                    "Suppression fonction",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    functions, functions[0]);
+            grapher.remove(expression.toString());
+            l.refresh();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

@@ -64,7 +64,7 @@ public class Grapher extends JPanel {
 
     public void remove(String expression) {
         for (Object[] function : functions) {
-            if (function[0] == expression) {
+            if (function[0].toString().equals(expression)) {
                 remove(function);
                 break;
             }

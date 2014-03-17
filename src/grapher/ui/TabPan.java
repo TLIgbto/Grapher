@@ -24,6 +24,8 @@ public class TabPan extends JTable {
         }
         TableModel model = new TableModel(donnee);
         setModel(model);
+        getColumnModel().getColumn(0).setCellEditor(new FunctionEditor(this));
+        //getColumnModel().getColumn(0).setCellRenderer(new FunctionRenderer());
         getColumnModel().getColumn(1).setCellEditor(new ColorChooserEditor(this));
         getColumnModel().getColumn(1).setCellRenderer(new MyCellRenderer());
     }

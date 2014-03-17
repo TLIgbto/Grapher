@@ -5,6 +5,7 @@
 	<property name="classes.dir" value="${build.dir}/classes"/>
 	<property name="jar.dir"     value="${build.dir}/jar"/>
 	<property name="jar.file"    value="${jar.dir}/${ant.project.name}.jar"/>
+	<property name="tools"       value="${java.home}/../lib/tools.jar"/>
 	<property name="main-class"  value="grapher.ui.Main"/>
 
 	<target name="clean">
@@ -21,6 +22,7 @@
 		<jar destfile="${jar.file}" basedir="${classes.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="${main-class}"/>
+				<attribute name="Class-Path" value="${tools}"/>
 			</manifest>
 		</jar>
 	</target>
@@ -31,7 +33,7 @@
 
 	<path id="project.class.path">
 		<pathelement location="${jar.file}"/>
-		<pathelement location="${java.home}/../lib/tools.jar"/>
+		<pathelement location="${tools}"/>
 	</path>
 	
 	<target name="run-fc" depends="jar,dyna">
