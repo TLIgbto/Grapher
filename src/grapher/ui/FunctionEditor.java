@@ -8,12 +8,7 @@ package grapher.ui;
 import grapher.fc.Function;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import javax.swing.AbstractCellEditor;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
@@ -24,47 +19,50 @@ import javax.swing.table.TableCellEditor;
  */
 public class FunctionEditor extends AbstractCellEditor implements TableCellEditor {
 
-    private JTextField delegate = new JTextField("tan(x)");
+    private String savedText, oldText;
+    private JTextField delegate = new JTextField();
     private TabPan tab;
     private int row;
 
-    String savedText;
 
     FunctionEditor(TabPan aThis) {
-        /*this.tab = tab;
+        this.tab = aThis;
         delegate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == 10) {
-                    FunctionEditor.this.changeText("tan(x)");
-                }
+                savedText = delegate.getText();
+                FunctionEditor.this.changeText(savedText);
             }
-        });*/
+        });
     }
-    
+
     public void highLight() {
-        tab.g.highLightGraph((Function) tab.getValueAt(row, 0), Color.BLACK);
+        for(Object[] f : tab.g.functions) {
+            if(f[0].toString().equals((tab.getValueAt(row, 0)).toString())) {
+                tab.g.highLightGraph((Function) f[0], (Color) f[1]);
+                break;
+            }
+        }
     }
-/*
+
     private void changeText(String text) {
         if (text != null) {
-            delegate.setText(text);
+            savedText = text;
         }
-    }*/
-    public Object getCellEditorValue() {
+    }
+
+    public Object getCellEditorValue() {        
+        tab.g.modify(oldText, savedText);
+        tab.l.refresh();
         return savedText;
     }
 
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
             int row, int column) {
-       
-        //changeText(value.toString());
         this.row = row;
-        
-        //highLight();
-        System.out.println(row);
-        //delegate.setText(value.toString());
-        return new JTextField("lol");
-        
+        highLight();
+        oldText = (oldText == null || !oldText.equals(value.toString())) ? value.toString() : oldText;
+        savedText = value.toString();        
+        delegate.setText(value.toString());
+        return delegate;
     }
-
 }

@@ -70,6 +70,16 @@ public class Grapher extends JPanel {
             }
         }
     }
+    
+    public void modify(String expression, String exp) {
+        for (Object[] function : functions) {
+            if (function[0].toString().equals(expression)) {
+                function[0] = FunctionFactory.createFunction(exp);
+                break;
+            }
+        }
+        repaint();
+    }
 
     public void add(Object[] tab) {
         functions.add(tab);

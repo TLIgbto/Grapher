@@ -13,10 +13,12 @@ import javax.swing.*;
  */
 public class TabPan extends JTable {
 
+    LeftPane l;
     Grapher g;
 
-    public TabPan(Grapher g) {
-        this.g = g;
+    public TabPan(LeftPane l) {
+        this.g = l.grapher;
+        this.l = l;
         Object donnee[][] = new Object[g.functions.size()][2];
         for (int i = 0; i < g.functions.size(); i++) {
             donnee[i][0] = g.functions.get(i)[0];
@@ -25,7 +27,7 @@ public class TabPan extends JTable {
         TableModel model = new TableModel(donnee);
         setModel(model);
         getColumnModel().getColumn(0).setCellEditor(new FunctionEditor(this));
-        //getColumnModel().getColumn(0).setCellRenderer(new FunctionRenderer());
+        getColumnModel().getColumn(0).setCellRenderer(new FunctionRenderer());
         getColumnModel().getColumn(1).setCellEditor(new ColorChooserEditor(this));
         getColumnModel().getColumn(1).setCellRenderer(new MyCellRenderer());
     }

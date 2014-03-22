@@ -5,7 +5,9 @@
  */
 package grapher.ui;
 
+import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,6 +22,11 @@ public class FunctionRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table,
             Object value, boolean isSelected, boolean hasFocus, int row,
             int column) {
-        return new JLabel(value.toString());
+        try {
+            return new JLabel(value.toString());
+        } catch (Exception e) {
+            System.out.println(value + " " + e.getMessage());
+            return null;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class LeftPane extends JPanel {
         this.grapher = grapher;
         this.grapher.setLeftPane(this);
         setLayout(new BorderLayout());
-        tab = new TabPan(grapher);
+        tab = new TabPan(this);
         add(tab);
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -31,7 +31,7 @@ public class LeftPane extends JPanel {
 
     public void setToolBar(JToolBar tool) {
         tool.setFloatable(false);
-        tool.setPreferredSize(new Dimension(100, 24));
+        tool.setPreferredSize(new Dimension(150, 24));
         //tool.setLayout();
         JButton plus = makeButton(new AddFunction(this), "Ajouter une nouvelle fonction", "+");
         JButton moins = makeButton(new RemoveFunction(this), "Supprimer une fonction", "-");

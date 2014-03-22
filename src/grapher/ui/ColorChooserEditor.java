@@ -34,8 +34,12 @@ class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
     }
 
     public void highLight() {
-
-       tab.g.highLightGraph((Function) tab.getValueAt(row, 0), savedColor);
+        for (Object[] f : tab.g.functions) {
+            if (f[0].toString().equals((tab.getValueAt(row, 0)).toString())) {
+                tab.g.highLightGraph((Function) f[0], savedColor);
+                break;
+            }
+        }
     }
 
     public Object getCellEditorValue() {
