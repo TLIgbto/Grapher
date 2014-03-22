@@ -5,6 +5,9 @@ import java.awt.Dimension;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
@@ -54,6 +57,7 @@ public class LeftPane extends JPanel {
         grapher.setLeftPane(new LeftPane(grapher));
         tab = grapher.getLeftPane().tab;
         add(tab);
+        System.out.println("refresh");
         revalidate();
         repaint();
     }

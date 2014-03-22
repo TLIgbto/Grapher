@@ -21,7 +21,7 @@ public class Main extends JFrame {
         grapher.setLeftPane(new LeftPane(grapher));
         JSplitPane spanel = new JSplitPane(1, grapher.getLeftPane(), grapher);
         add(spanel);
-        setJMenuBar(new MenuBar(new LeftPane(grapher)));
+        setJMenuBar(new MenuBar(grapher.getLeftPane()));
         pack();
     }
 
