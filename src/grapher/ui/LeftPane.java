@@ -1,20 +1,11 @@
 package grapher.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
+import javax.swing.*;
+import java.awt.*;
 
 public class LeftPane extends JPanel {
 
     private JToolBar tool;
-    JPanel left;
     TabPan tab;
     Grapher grapher;
 
@@ -22,16 +13,19 @@ public class LeftPane extends JPanel {
         this.grapher = grapher;
         this.grapher.setLeftPane(this);
         setLayout(new BorderLayout());
+
         tab = new TabPan(this);
         add(tab);
         JPanel panel = new JPanel(new BorderLayout());
-
         this.tool = new JToolBar(JToolBar.HORIZONTAL);
         setToolBar(tool);
         panel.add(tool, BorderLayout.CENTER);
         add(panel, BorderLayout.SOUTH);
     }
-
+    /**
+     * méthode pour paramétrer un JToolBar
+     * @param tool JToolBar
+     */
     public void setToolBar(JToolBar tool) {
         tool.setFloatable(false);
         tool.setPreferredSize(new Dimension(150, 24));
@@ -41,7 +35,13 @@ public class LeftPane extends JPanel {
         tool.add(plus);
         tool.add(moins);
     }
-
+    /**
+     * fonction de fabrication de bouton
+     * @param action AbstractionAction : une action
+     * @param toolTipText String : information sur l'action du bouton
+     * @param altText String : label du bouton
+     * @return un bouton
+     */
     public JButton makeButton(AbstractAction action, String toolTipText, String altText) {
         JButton button = new JButton();
         button.setAction(action);

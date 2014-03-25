@@ -1,9 +1,11 @@
 package grapher.ui;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.JOptionPane;
 
+/**
+ * Méthode pour l'ajout d'une fonction au grapher
+ */
 public class AddFunction extends AbstractAction {
 
     private Grapher grapher;

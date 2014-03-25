@@ -1,9 +1,10 @@
 package grapher.ui;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.JOptionPane;
-
+/**
+ * Méthode pour la suppression d'une fonction du grapher
+ */
 public class RemoveFunction extends AbstractAction {
 
     private Grapher grapher;

@@ -16,7 +16,7 @@ public class Grapher extends JPanel {
 
     static final int MARGIN = 40;
     static final int STEP = 5;
-    static String selected="rien";
+    static String selected="rien";//prend la valeur d'une fonction a surligner
     static final Color defaultColor = Color.black;
     static final BasicStroke dash = new BasicStroke(1, BasicStroke.CAP_ROUND,
             BasicStroke.JOIN_ROUND,
@@ -30,8 +30,13 @@ public class Grapher extends JPanel {
     protected double xmin, xmax;
     protected double ymin, ymax;
 
-    protected Vector<Object[]> functions;
-    private LeftPane leftPane;
+    protected Vector<Object[]> functions;//vecteur contenant pour chaque ligne un tableau d'objets[Function][couleur]
+    private LeftPane leftPane;//panneau de gauche
+
+    public enum States {
+        //les differents états pour la gestion des evenements de la souris
+        rien,gauche, milieu, droite, droitedragged, gauchedragged
+    }
 
     public Grapher() {
         xmin = -PI / 2.;
@@ -45,7 +50,11 @@ public class Grapher extends JPanel {
         addMouseMotionListener(mia);
         addMouseWheelListener(mia);
     }
-
+    /**
+    * Méthode qui permet de surligner une fonction passée en parametre
+    * @param f Function : une fonction
+    * @param c Color : une couleur
+    * */
     public void highLightGraph(Function f, Color c) {
         selected=f.toString();
         for (Object[] function : functions) {
@@ -279,7 +288,7 @@ public class Grapher extends JPanel {
         int x = 0;
         int y = 0;
         Point p0, p1;
-        boolean gauche, milieu, droite, droitedragged, gauchedragged = false;
+        States state=States.rien;
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
@@ -296,25 +305,41 @@ public class Grapher extends JPanel {
 
         public void mouseDragged(MouseEvent e) {
 
-            if (gauche) {
-                gauchedragged = true;
-                setCursor(new Cursor(Cursor.HAND_CURSOR));
-                translate((x - e.getX()) / 50, (y - e.getY()) / 50);
-            } else if (milieu) {
+            switch(state){
+                case gauche://si le bouton gauche est maintenu enfoncé + déplacement ->on passe a l'état bouton gauche enfoncé
+                            state=States.gauchedragged;break;
+                case milieu:
+                            p1 = e.getPoint();
+                            if (p0.x > p1.x) {
+                                zoom(p0, -5);
+                            } else if (p0.x < p1.x) {
+                                zoom(p0, 5);
+                            };break;
+                case droite://si le bouton droit est maintenu enfoncé + déplacement -> on passe a l'état bouton droit enfoncé
+                            state=States.droitedragged;
+                case gauchedragged://bouton gauche enfoncé -> on navigue sur le graphe
+                            setCursor(new Cursor(Cursor.HAND_CURSOR));
+                            translate((x - e.getX()) / 50, (y - e.getY()) / 50);
+                            break;
+                case droitedragged://bouton droit enfoncé  ->on rempli la partie choisie de noir puis on zoom
+                    p1 = e.getPoint();
 
-                p1 = e.getPoint();
-                if (p0.x > p1.x) {
-                    zoom(p0, -5);
-                } else if (p0.x < p1.x) {
-                    zoom(p0, 5);
-                }
-
-            } else if (droite) {
-                droitedragged = true;
-                p1 = e.getPoint();
+                    if(p1.x<p0.x){
+                        if(p1.y<p0.y){
+                            e.getComponent().getGraphics().fillRect(p1.x,p1.y,abs(p1.x-p0.x),abs(p1.y-p0.y));
+                        }else{
+                            e.getComponent().getGraphics().fillRect(p1.x,p0.y,abs(p1.x-p0.x),abs(p1.y-p0.y));
+                        }
+                    }else if(p1.x>p0.x){
+                        if(p1.y<p0.y){
+                            e.getComponent().getGraphics().fillRect(x,p1.y,abs(p1.x-p0.x),abs(p1.y-p0.y));
+                        }else{
+                            e.getComponent().getGraphics().fillRect(x,y,abs(p1.x-p0.x),abs(p1.y-p0.y));
+                        }
+                    }
+                    break;
             }
-
-        }
+         }
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -322,13 +347,13 @@ public class Grapher extends JPanel {
             y = e.getY();
             p0 = new Point(x, y);
             if (e.getButton() == MouseEvent.BUTTON1) {
-                gauche = true;
+                state=States.gauche;//bouton gauche pressé
 
             } else if (e.getButton() == MouseEvent.BUTTON2) {
-                milieu = true;
+                state=States.milieu;//bouton du milieu pressé
 
             } else if (e.getButton() == MouseEvent.BUTTON3) {
-                droite = true;
+                state= States.droite;//bouton droit pressé
             }
         }
 
@@ -336,21 +361,15 @@ public class Grapher extends JPanel {
         public void mouseReleased(MouseEvent e) {
             setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
-            if (droitedragged) {
-                zoom(p0, p1);
-            } else if (gauchedragged) {
-                //aucun traitement
-            } else if (gauche) {
-                zoom(p0, 5);
-            } else if (droite) {
-                zoom(p0, -5);
-            }
+            switch(state){
 
-            gauche = false;
-            droite = false;
-            droitedragged = false;
-            gauchedragged = false;
-            milieu = false;
+                case droitedragged:
+                                zoom(p0, p1);break;
+                case gauche:
+                                zoom(p0, 5);break;
+                case droite:
+                                zoom(p0, -5);break;
+            }
         }
     }
 }
